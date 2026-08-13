@@ -50,9 +50,7 @@ int Ball::get_pos(int limit){
 int main(){
 	InitWindow(screenWidth, screenHeight, "Collision Sim Beta");
 
-	int amt = rand() % 100;
-
-	vector<Ball> balls(amt);
+	srand(time(NULL));
 
 	while(!WindowShouldClose()){
 		BeginDrawing();
