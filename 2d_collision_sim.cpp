@@ -1,54 +1,66 @@
 #include "raylib.h"
-#include <vector>
-#include <time.h>
-#include <cstdlib>
-
-const int screenWidth = 1920;
-const int screenHeight = 1057;
+#include "std_lib_facilities.h"
+#include <random>
+#include <algorithm>
 
 using namespace std;
 
+const int amt = 33;
+
 class Ball{
 	public:
-		int get_pos(int limit);
+		void set_pos(), assign_pos();
 		void draw();
 
 	private:
 		int radius = 30, mass;
-		Vector2 v_ini, pos, v_fin;
+		Vector2 pos;
 };
-
-int amt = rand() % 100;
-vector<Ball> balls(amt);
 
 void Ball::draw(){
 	ClearBackground(BLACK);
-	// first, use a for loop to assign each ball[i] a fixed position.
+	for(int i = 0; i < amt; i++){
+
+	}
 }
 
-int Ball::get_pos(int limit){
-	vector<int> coords(limit);
-	int buffer = 1; // to prevent balls from touching each other upon spawn
-	for(int i = 1; buffer < limit; i++){
-		buffer = i * radius + (i - 1);
-		coords[i] = buffer;
-	}
-	int rnd_ch = rand() % (limit);
+vector<int> allowed_x(amt);
+vector<int> allowed_y(amt);
 
-	// this function shall be called by a new function assign_pos().
-	// assign_pos() is responsible for assining each ball[i] a unique position.
-	// that unique position, after getting assigned, should get deleted from the coords vector.
-	// therefore, assign_pos() shall pass two vectors to get_pos(): coords_X and coords_y.
-	// both contain the eligible list of positions for x and y coordinates.
-	// good luck to myself i guess.
+void Ball::set_pos(){
+	int buffer = radius;
+
+	for(int i = 0; buffer < amt; i++){
+		buffer = (2 * i + 1) * radius + i + 1; // to prevent balls from intersecting upon spawn
+		allowed_x[i] = buffer;
+		allowed_y[i] = buffer;
+	}
+
+	random_device rd;
+	mt19937 g(rd());
+	shuffle(allowed_x.begin(), allowed_x.end(), g);
+	shuffle(allowed_y.begin(), allowed_y.end(), g);
 	
-	return coords[rnd_ch];
+	return;
+}
+
+void::Ball::assign_pos(){
+	pos = {narrow_cast<float>(allowed_x.size()), narrow_cast<float>(allowed_y.size())};
+	return;
 }
 
 int main(){
-	InitWindow(screenWidth, screenHeight, "Collision Sim Beta");
+	const int screenWidth = 1920;
+	const int screenHeight = 1057;
 
-	srand(time(NULL));
+	vector<Ball> balls(amt);
+	for(int i = 0; i < amt; i++){
+		balls[i].assign_pos();
+		allowed_x.pop_back();
+		allowed_y.pop_back();
+	}
+
+	InitWindow(screenWidth, screenHeight, "Collision Sim Beta");
 
 	while(!WindowShouldClose()){
 		BeginDrawing();
