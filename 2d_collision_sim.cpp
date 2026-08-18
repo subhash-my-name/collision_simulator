@@ -6,14 +6,15 @@
 using namespace std;
 
 const int amt = 33;
+const int radius = 30;
 
 class Ball{
 	public:
-		void set_pos(), assign_pos();
+		void assign_pos();
 		void draw();
 
 	private:
-		int radius = 30, mass;
+		int mass;
 		Vector2 pos;
 };
 
@@ -27,7 +28,7 @@ void Ball::draw(){
 vector<int> allowed_x(amt);
 vector<int> allowed_y(amt);
 
-void Ball::set_pos(){
+void set_pos(){
 	int buffer = radius;
 
 	for(int i = 0; buffer < amt; i++){
@@ -54,6 +55,7 @@ int main(){
 	const int screenHeight = 1057;
 
 	vector<Ball> balls(amt);
+	set_pos();
 	for(int i = 0; i < amt; i++){
 		balls[i].assign_pos();
 		allowed_x.pop_back();
